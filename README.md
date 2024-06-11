@@ -1,5 +1,5 @@
 # Community Service - 사용자들이 다양한 주제에 대해 소통할 수 있는 커뮤니티 서비스
-목차
+
 1. [Tech Stack](#-tech-stack)
 2. [ERD](#erd)
 3. [프로그램 기능 및 설계](#-프로그램-기능-및-설계)
@@ -22,22 +22,22 @@
 ## 프로그램 기능 및 설계
 
 ### 회원관리
-
 <details>
-<summary>회원가입 기능</summary>
-<div markdown = 1">
+<summary><input type="checkbox" > 회원가입 기능</summary>
+<div markdown="1">
 
-  - 사용자는 회원가입할 수 있습니다.
-  - 이메일, 닉네임, 비밀번호를 입력 받으며, 이메일과 닉네임은 중복이 불가합니다.
-  - 회원가입한 모든 사용자는 user 권한을 갖습니다.
-  - 관리자 권한은 별도의 회원가입 절차를 거치지 않습니다.
-  - 회원가입 시 비밀번호는 BCryptPasswordEncoder를 이용하여 암호화하여 저장합니다.
-  - 회원가입시 이메일 인증을 진행합니다. 인증이 완료되면 'email_auth' 필드가 업데이트 됩니다.
+- 사용자는 회원가입할 수 있습니다.
+- 이메일, 닉네임, 비밀번호를 입력 받으며, 이메일과 닉네임은 중복이 불가합니다.
+- 회원가입한 모든 사용자는 user 권한을 갖습니다.
+- 관리자 권한은 별도의 회원가입 절차를 거치지 않습니다.
+- 회원가입 시 비밀번호는 BCryptPasswordEncoder를 이용하여 암호화하여 저장합니다.
+- 회원가입시 이메일 인증을 진행합니다. 인증이 완료되면 'email_auth' 필드가 업데이트 됩니다.
+
 </div>
 </details>
 
 <details>
-<summary> 로그인 기능</summary>
+<summary><input type="checkbox" > 로그인 기능</summary>
 <div markdown = 1">
 
   - 사용자는 로그인할 수 있습니다.
@@ -48,7 +48,7 @@
 </details>
 
 <details>
-<summary> 로그아웃 기능</summary>
+<summary><input type="checkbox" > 로그아웃 기능</summary>
 <div markdown = 1">
 
   - Redis에서 토큰을 조회한 후 토큰이 존재하면 삭제합니다.
@@ -56,7 +56,7 @@
 </details>
 
 <details>
-<summary> 회원정보 조회</summary>
+<summary><input type="checkbox"> 회원정보 조회</summary>
 <div markdown = 1">
 
   - 사용자는 자신의 회원 정보를 조회할 수 있습니다.
@@ -66,7 +66,7 @@
 </details>
 
 <details>
-<summary> 회원정보 수정</summary>
+<summary><input type="checkbox" > 회원정보 수정</summary>
 <div markdown = 1">
 
   - 사용자는 자신의 회원 정보를 수정할 수 있습니다.
@@ -77,7 +77,7 @@
 ### 커뮤니티
 
 <details>
-<summary>게시물 작성 기능</summary>
+<summary><input type="checkbox"> 게시물 작성 기능</summary>
 <div markdown = 1">
 
   - 로그인한 사용자는 게시물을 작성할 수 있습니다.
@@ -87,7 +87,7 @@
 </details>
 
 <details>
-<summary>게시물 목록 조회기능 </summary>
+<summary><input type="checkbox"> 게시물 목록 조회기능 </summary>
 <div markdown = 1">
 
   - 로그인 여부와 상관없이 게시물 목록을 조회할 수 있습니다.
@@ -96,7 +96,7 @@
 </details>
 
 <details>
-<summary>특정 게시물 조회 기능(검색)</summary>
+<summary><input type="checkbox"> 특정 게시물 조회 기능(검색)</summary>
 <div markdown = 1">
 
   - 로그인 여부와 상관없이 게시물을 조회할 수 있습니다.
@@ -107,7 +107,7 @@
 </details>
 
 <details>
-<summary>게시물 좋아요 기능</summary>
+<summary><input type="checkbox"> 게시물 좋아요 기능</summary>
 <div markdown = 1">
 
   - 로그인한 사용자는 게시물에 좋아요를 누를 수 있습니다.
@@ -116,7 +116,7 @@
 </details>
 
 <details>
-<summary>댓글 작성 기능</summary>
+<summary><input type="checkbox"> 댓글 작성 기능</summary>
 <div markdown = 1">
 
   - 로그인한 사용자는 특정 게시물에 댓글을 작성할 수 있습니다.
@@ -125,7 +125,7 @@
 </details>
 
 <details>
-<summary>댓글 수정 기능</summary>
+<summary><input type="checkbox"> 댓글 수정 기능</summary>
 <div markdown = 1">
 
   - 로그인한 사용자는 자신이 작성한 댓글을 수정할 수 있습니다.
@@ -135,7 +135,7 @@
 
 
 <details>
-<summary>댓글 삭제 기능</summary>
+<summary><input type="checkbox"> 댓글 삭제 기능</summary>
 <div markdown = 1">
 
   - 로그인한 사용자는 자신이 작성한 댓글을 삭제할 수 있습니다.
@@ -144,7 +144,7 @@
 </details>
 
 <details>
-<summary>댓글 목록 조회 기능</summary>
+<summary><input type="checkbox"> 댓글 목록 조회 기능</summary>
 <div markdown = 1">
 
   - 로그인 여부와 상관없이 특정 게시물에 남겨진 모든 댓글을 조회할 수 있습니다.
@@ -153,7 +153,7 @@
 </details>
 
 <details>
-<summary>댓글 좋아요 기능</summary>
+<summary><input type="checkbox"> 댓글 좋아요 기능</summary>
 <div markdown = 1">
 
   - 로그인한 사용자는 특정 댓글에 좋아요를 남길 수 있습니다.
