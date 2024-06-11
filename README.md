@@ -18,7 +18,7 @@
 
 ## ERD
 
-<img src="https://github.com/Namgyu11/ktb_cj_community_spring_BE/assets/103015031/e0b82b44-f284-4307-affc-dbbafb26848f" width="600" height="300"/>
+<img src="https://github.com/Namgyu11/ktb_cj_community_spring_BE/assets/103015031/e0b82b44-f284-4307-affc-dbbafb26848f" width="900" height="400"/>
 
 ## 프로그램 기능 및 설계
 
