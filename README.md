@@ -23,7 +23,7 @@
 
 ### 회원관리
 <details>
-<summary><input type="checkbox" > 회원가입 기능</summary>
+<summary><input type="checkbox" disabled> 회원가입 기능</summary>
 <div markdown="1">
 
 - 사용자는 회원가입할 수 있습니다.
