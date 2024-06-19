@@ -21,7 +21,7 @@ public class RedisService {
        * 주어진 Key 에 대응하는 데이터를 Redis DB 에서 조회
        *
        * @param key 조회하고자 하는 데이터의 Key
-       * @return key 에  대응하는 데이터
+       * @return key 에 대응하는 데이터
        */
       public String getData(String key) {
             ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
