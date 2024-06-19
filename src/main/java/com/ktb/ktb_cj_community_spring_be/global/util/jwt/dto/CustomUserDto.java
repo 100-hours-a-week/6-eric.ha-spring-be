@@ -24,7 +24,7 @@ public class CustomUserDto {
                     .id(member.getId())
                     .email(member.getEmail())
                     .password(member.getPassword())
-                    .roleType(member.getRoleType())
+                    .roleType(member.getRoleType().getCode())
                     .build();
       }
 
