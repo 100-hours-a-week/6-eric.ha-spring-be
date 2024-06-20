@@ -20,6 +20,8 @@ public enum ErrorCode {
       WRITE_NOT_YOURSELF(HttpStatus.BAD_REQUEST, "본인이 작성한 글만 수정 또는 삭제할 수 있습니다."),
       POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당 글을 찾을 수 없습니다."),
       COMMENT_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당 댓글을 찾을 수 없습니다."),
+      PROFILE_IMAGE_UPLOAD_ERROR(HttpStatus.BAD_REQUEST, "프로필 이미지 업로드 중 오류가 발생했습니다."),
+      POST_IMAGE_UPLOAD_ERROR(HttpStatus.BAD_REQUEST, "게시물 이미지 업로드 중 오류가 발생했습니다."),
 
 
       /**
