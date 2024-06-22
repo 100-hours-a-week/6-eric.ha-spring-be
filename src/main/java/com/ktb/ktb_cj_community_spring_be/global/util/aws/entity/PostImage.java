@@ -41,8 +41,9 @@ public class PostImage extends BaseEntity {
       @JoinColumn(name = "post_id")
       private Post post;
 
-      public void mappingPost(Post post){
+      public void mappingPost(Post post) {
             this.post = post;
+
       }
 
 }

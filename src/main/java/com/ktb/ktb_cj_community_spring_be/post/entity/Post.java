@@ -2,6 +2,7 @@ package com.ktb.ktb_cj_community_spring_be.post.entity;
 
 import com.ktb.ktb_cj_community_spring_be.comment.entity.Comment;
 import com.ktb.ktb_cj_community_spring_be.global.entity.BaseEntity;
+import com.ktb.ktb_cj_community_spring_be.global.util.aws.entity.PostImage;
 import com.ktb.ktb_cj_community_spring_be.member.entity.Member;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -46,4 +47,18 @@ public class Post extends BaseEntity {
 
       @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
       private List<PostLike> postLikes = new ArrayList<>();
+
+      @Builder.Default
+      @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+      private List<PostImage> images = new ArrayList<>();
+
+      public void addImage(PostImage image) {
+            this.images.add(image);
+            image.mappingPost(this);
+      }
+
+      public void removeImage(PostImage image) {
+            this.images.remove(image);
+      }
+
 }
