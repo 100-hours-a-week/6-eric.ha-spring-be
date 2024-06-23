@@ -16,7 +16,7 @@ public interface PostService {
       PostResponse updatePost(Long id, PostRequest request, List<MultipartFile> newImages,
               List<Long> imageIdsToDelete, String email);
 
-      PostResponse deletePost(Long id, String email);
+      void deletePost(Long id, String email);
 
       Post uploadS3Image(PostRequest request, List<MultipartFile> multipartFiles);
 
