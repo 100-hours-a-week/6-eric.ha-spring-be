@@ -63,4 +63,13 @@ public class Member extends BaseEntity {
       @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
       private List<CommentLike> commentLikes = new ArrayList<>();
 
+      public void addPost(Post post) {
+            this.posts.add(post);
+            post.setMember(this);
+      }
+
+      public void removePost(Post post) {
+            this.posts.remove(post);
+            post.setMember(null);
+      }
 }
