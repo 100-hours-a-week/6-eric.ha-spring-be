@@ -1,6 +1,8 @@
-package com.ktb.ktb_cj_community_spring_be.post.service;
+package com.ktb.ktb_cj_community_spring_be.post.service.impl;
 
-import static com.ktb.ktb_cj_community_spring_be.global.exception.type.ErrorCode.*;
+import static com.ktb.ktb_cj_community_spring_be.global.exception.type.ErrorCode.POST_NOT_FOUND;
+import static com.ktb.ktb_cj_community_spring_be.global.exception.type.ErrorCode.USER_NOT_FOUND;
+import static com.ktb.ktb_cj_community_spring_be.global.exception.type.ErrorCode.WRITE_NOT_YOURSELF;
 
 import com.ktb.ktb_cj_community_spring_be.global.exception.GlobalException;
 import com.ktb.ktb_cj_community_spring_be.global.util.aws.dto.S3ImageDto;
@@ -12,9 +14,13 @@ import com.ktb.ktb_cj_community_spring_be.post.dto.PostRequest;
 import com.ktb.ktb_cj_community_spring_be.post.dto.PostResponse;
 import com.ktb.ktb_cj_community_spring_be.post.entity.Post;
 import com.ktb.ktb_cj_community_spring_be.post.repository.PostRepository;
+import com.ktb.ktb_cj_community_spring_be.post.service.PostService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -131,6 +137,16 @@ public class PostServiceImpl implements PostService {
             imagesList.forEach(post::addImage);
 
             return post;
+      }
+
+      @Override
+      public Page<PostResponse> postList(Pageable pageable) {
+            return postRepository.findAll(pageable).map(PostResponse::fromEntity);
+      }
+
+      @Override
+      public Slice<PostResponse> postListScroll(Pageable pageable) {
+            return null;
       }
 
       private Member getMember(String email) {

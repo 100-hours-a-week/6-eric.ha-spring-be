@@ -22,7 +22,8 @@ public enum ErrorCode {
       COMMENT_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당 댓글을 찾을 수 없습니다."),
       PROFILE_IMAGE_UPLOAD_ERROR(HttpStatus.BAD_REQUEST, "프로필 이미지 업로드 중 오류가 발생했습니다."),
       POST_IMAGE_UPLOAD_ERROR(HttpStatus.BAD_REQUEST, "게시물 이미지 업로드 중 오류가 발생했습니다."),
-
+      ALREADY_LIKED(HttpStatus.BAD_REQUEST, "이미 좋아요를 누른 게시물입니다."),
+      ALREADY_UNLIKED(HttpStatus.BAD_REQUEST, "이미 좋아요를 취소한 게시물입니다."),
 
       /**
        * 401 Unauthorized
