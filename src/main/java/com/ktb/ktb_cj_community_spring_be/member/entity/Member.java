@@ -6,7 +6,13 @@ import com.ktb.ktb_cj_community_spring_be.global.entity.BaseEntity;
 import com.ktb.ktb_cj_community_spring_be.member.entity.type.MemberRoleType;
 import com.ktb.ktb_cj_community_spring_be.post.entity.Post;
 import com.ktb.ktb_cj_community_spring_be.post.entity.PostLike;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -71,5 +77,10 @@ public class Member extends BaseEntity {
       public void removePost(Post post) {
             this.posts.remove(post);
             post.setMember(null);
+
+      }
+
+      public void addPostLike(PostLike postLike) {
+            this.postLikes.add(postLike);
       }
 }
