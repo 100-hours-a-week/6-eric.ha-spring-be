@@ -4,7 +4,16 @@ import com.ktb.ktb_cj_community_spring_be.comment.entity.Comment;
 import com.ktb.ktb_cj_community_spring_be.global.entity.BaseEntity;
 import com.ktb.ktb_cj_community_spring_be.global.util.aws.entity.PostImage;
 import com.ktb.ktb_cj_community_spring_be.member.entity.Member;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -61,4 +70,15 @@ public class Post extends BaseEntity {
             this.images.remove(image);
       }
 
+      public void addPostLike(PostLike postLike) {
+            this.postLikes.add(postLike);
+      }
+
+      public void removePostLike(PostLike postLike) {
+            this.postLikes.remove(postLike);
+      }
+
+      public void updateLikeCount() {
+            this.likeCount = this.postLikes.size();
+      }
 }

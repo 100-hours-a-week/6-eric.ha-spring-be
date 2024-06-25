@@ -1,10 +1,9 @@
 package com.ktb.ktb_cj_community_spring_be.post.repository.impl;
 
-import com.ktb.ktb_cj_community_spring_be.post.entity.Post;
-import com.ktb.ktb_cj_community_spring_be.post.repository.CustomPostRepository;
-
 import static com.ktb.ktb_cj_community_spring_be.post.entity.QPost.post;
 
+import com.ktb.ktb_cj_community_spring_be.post.entity.Post;
+import com.ktb.ktb_cj_community_spring_be.post.repository.CustomPostRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -55,6 +54,21 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
                   return null;
             }
             return post.id.lt(postId);
+      }
+
+      public Slice<Post> findAllPosts(Long postId, Pageable pageable) {
+            List<Post> postList = jpa
+                    .selectFrom(post)
+                    .where(ltPostId(postId))
+                    .orderBy(
+                            post.id.desc()
+                            , post.hits.desc()
+                            , post.likeCount.desc()
+                    )
+                    .limit(pageable.getPageSize() + 1)
+                    .fetch();
+
+            return checkLastPage(pageable, postList);
       }
 
       private Slice<Post> checkLastPage(Pageable pageable, List<Post> results) {

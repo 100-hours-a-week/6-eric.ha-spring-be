@@ -8,6 +8,10 @@ import com.ktb.ktb_cj_community_spring_be.post.service.PostService;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +47,16 @@ public class PostController {
       }
 
       /**
+       * 전체 게시물 조회
+       */
+      @GetMapping("/list")
+      public ResponseEntity<Page<PostResponse>> getPostList(
+              @PageableDefault(sort = "createdAt", direction = Direction.DESC) Pageable pageable) {
+
+            return ResponseEntity.ok(postService.postList(pageable));
+      }
+
+      /**
        * 게시물 상세 조회
        */
       @GetMapping("/{id}")
@@ -52,7 +66,6 @@ public class PostController {
 
       /**
        * 게시물 수정
-       *
        */
       @PatchMapping(path = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
               produces = MediaType.APPLICATION_JSON_VALUE)
@@ -75,5 +88,6 @@ public class PostController {
             postService.deletePost(id, email);
             return ResponseEntity.status(HttpStatus.OK).build();
       }
+
 
 }
