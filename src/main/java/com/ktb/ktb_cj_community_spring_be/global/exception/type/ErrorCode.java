@@ -24,7 +24,8 @@ public enum ErrorCode {
       POST_IMAGE_UPLOAD_ERROR(HttpStatus.BAD_REQUEST, "게시물 이미지 업로드 중 오류가 발생했습니다."),
       ALREADY_LIKED(HttpStatus.BAD_REQUEST, "이미 좋아요를 누른 게시물입니다."),
       ALREADY_UNLIKED(HttpStatus.BAD_REQUEST, "이미 좋아요를 취소한 게시물입니다."),
-
+      NICKNAME_DUPLICATION(HttpStatus.BAD_REQUEST, "이미 사용중인 닉네임입니다."),
+      PASSWORD_EMPTY(HttpStatus.BAD_REQUEST, "비밀번호를 입력해주세요."),
       /**
        * 401 Unauthorized
        */
@@ -66,7 +67,7 @@ public enum ErrorCode {
       /**
        * 405 Method Not Allowed
        */
-      METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "허용되지 않은 HTTP 메서드입니다.")
+      METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "허용되지 않은 HTTP 메서드입니다."),
       ;
 
       private final HttpStatus httpStatus;
