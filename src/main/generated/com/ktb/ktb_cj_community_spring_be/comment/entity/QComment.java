@@ -20,11 +20,13 @@ public class QComment extends EntityPathBase<Comment> {
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QComment comment1 = new QComment("comment1");
+    public static final QComment comment = new QComment("comment");
 
     public final com.ktb.ktb_cj_community_spring_be.global.entity.QBaseEntity _super = new com.ktb.ktb_cj_community_spring_be.global.entity.QBaseEntity(this);
 
-    public final StringPath comment = createString("comment");
+    public final ListPath<CommentLike, QCommentLike> commentLikes = this.<CommentLike, QCommentLike>createList("commentLikes", CommentLike.class, QCommentLike.class, PathInits.DIRECT2);
+
+    public final StringPath content = createString("content");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;

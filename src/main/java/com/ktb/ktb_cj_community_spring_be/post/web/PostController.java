@@ -5,6 +5,7 @@ import com.ktb.ktb_cj_community_spring_be.auth.config.LoginUser;
 import com.ktb.ktb_cj_community_spring_be.post.dto.PostRequest;
 import com.ktb.ktb_cj_community_spring_be.post.dto.PostResponse;
 import com.ktb.ktb_cj_community_spring_be.post.service.PostService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -59,9 +60,10 @@ public class PostController {
       /**
        * 게시물 상세 조회
        */
-      @GetMapping("/{id}")
-      public ResponseEntity<PostResponse> getPostDetail(@PathVariable Long id) {
-            return ResponseEntity.ok(postService.readPost(id));
+      @GetMapping("/detail/{id}")
+      public ResponseEntity<PostResponse> getPostDetail(@PathVariable Long id,
+              HttpServletRequest request) {
+            return ResponseEntity.ok(postService.readPost(id, request));
       }
 
       /**
