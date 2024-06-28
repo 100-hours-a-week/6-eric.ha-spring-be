@@ -4,7 +4,9 @@ import static com.ktb.ktb_cj_community_spring_be.global.exception.type.ErrorCode
 import static com.ktb.ktb_cj_community_spring_be.global.exception.type.ErrorCode.USER_NOT_FOUND;
 import static com.ktb.ktb_cj_community_spring_be.global.exception.type.ErrorCode.WRITE_NOT_YOURSELF;
 
+import com.ktb.ktb_cj_community_spring_be.comment.repository.CommentRepository;
 import com.ktb.ktb_cj_community_spring_be.global.exception.GlobalException;
+import com.ktb.ktb_cj_community_spring_be.global.service.RedisService;
 import com.ktb.ktb_cj_community_spring_be.global.util.aws.dto.S3ImageDto;
 import com.ktb.ktb_cj_community_spring_be.global.util.aws.entity.PostImage;
 import com.ktb.ktb_cj_community_spring_be.global.util.aws.service.AwsS3Service;
@@ -15,12 +17,16 @@ import com.ktb.ktb_cj_community_spring_be.post.dto.PostResponse;
 import com.ktb.ktb_cj_community_spring_be.post.entity.Post;
 import com.ktb.ktb_cj_community_spring_be.post.repository.PostRepository;
 import com.ktb.ktb_cj_community_spring_be.post.service.PostService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,6 +38,10 @@ public class PostServiceImpl implements PostService {
       private final PostRepository postRepository;
       private final MemberRepository memberRepository;
       private final AwsS3Service awsS3Service;
+      private static final String VIEW_HASH_KEY = "post::views";
+      private final RedisService redisService;
+      private final CommentRepository commentRepository;
+
 
       /**
        * 게시물을 생성하고 그에 대한 정보를 반환
@@ -67,8 +77,24 @@ public class PostServiceImpl implements PostService {
        * @return 조회된 게시물의 정보를 포함한 PostResponse 객체
        */
       @Override
-      public PostResponse readPost(Long postId) {
+      public PostResponse readPost(Long postId, HttpServletRequest request) {
             Post post = getPost(postId);
+
+            HttpSession session = request.getSession();
+
+            // 클라이언트의 세션에서 중복 조회 여부 확인
+            Boolean hasRead = (Boolean) session.getAttribute("readPost:" + postId);
+
+            if (hasRead == null || !hasRead) {
+
+                  //중복 조회 여부를 세션에 저장
+                  session.setAttribute("readPost:" + postId, true);
+
+                  //조회수 증가
+                  redisService.increaseHashData(VIEW_HASH_KEY, postId.toString());
+            } else {
+                  log.info(" 중복 요청 발생 Redis == readPost ");
+            }
 
             return PostResponse.fromEntity(post);
       }
@@ -139,15 +165,28 @@ public class PostServiceImpl implements PostService {
             return post;
       }
 
+      /**
+       * 페이징 처리된 게시물 리스트 조회
+       *
+       * @param pageable 페이지 정보
+       * @return 조회된 게시물 리스트
+       */
       @Override
       public Page<PostResponse> postList(Pageable pageable) {
-            return postRepository.findAll(pageable).map(PostResponse::fromEntity);
+            return postRepository.findAll(pageable).map(PostResponse::listFromEntity);
       }
 
+      /**
+       * 무한 스크롤을 위한 게시물 리스트 조회
+       *
+       * @param pageable 페이지 정보
+       * @return 조회된 게시물 리스트
+       */
       @Override
       public Slice<PostResponse> postListScroll(Pageable pageable) {
-            return null;
+            return postRepository.findAll(pageable).map(PostResponse::listFromEntity);
       }
+
 
       private Member getMember(String email) {
             return memberRepository.findByEmail(email)
@@ -162,6 +201,23 @@ public class PostServiceImpl implements PostService {
       private void validationPost(Post post, Member member) {
             if (!post.getMember().getEmail().equals(member.getEmail())) {
                   throw new GlobalException(WRITE_NOT_YOURSELF);
+            }
+      }
+
+      /**
+       * Redis 에 저장된 조회수를 DB에 업데이트
+       */
+      @Scheduled(cron = "${spring.scheduler.refresh-time}")
+      public void updateViewCountToDB() {
+            Map<Object, Object> map = redisService.hasHashKeys(VIEW_HASH_KEY);
+
+            for (Map.Entry<Object, Object> entry : map.entrySet()) {
+                  Long postId = Long.parseLong(entry.getKey().toString());
+                  int views = Integer.parseInt(entry.getValue().toString());
+
+                  postRepository.updateViews(postId, views);
+
+                  redisService.deleteHashKey(VIEW_HASH_KEY, postId.toString());
             }
       }
 }

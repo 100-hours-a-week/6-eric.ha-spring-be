@@ -11,4 +11,6 @@ public interface CustomPostRepository {
 
       @Transactional
       void updateViews(Long postId, int hits);
+
+      Slice<Post> findAllPosts(Long postId, Pageable pageable);
 }

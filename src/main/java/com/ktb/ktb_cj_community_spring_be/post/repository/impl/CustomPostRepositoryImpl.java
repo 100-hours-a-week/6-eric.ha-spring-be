@@ -56,6 +56,13 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             return post.id.lt(postId);
       }
 
+      /**
+       * 무한 스크롤을 위한 게시물 조회
+       *
+       * @param postId   마지막 게시물의 id
+       * @param pageable 페이지 정보
+       * @return 조회된 게시물 리스트
+       */
       public Slice<Post> findAllPosts(Long postId, Pageable pageable) {
             List<Post> postList = jpa
                     .selectFrom(post)
