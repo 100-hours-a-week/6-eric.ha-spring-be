@@ -15,16 +15,17 @@ import lombok.Setter;
 @Builder
 public class CommentResponse {
 
-      Long memberId;
-      Long postId;
-      Long commentId;
+      private Long memberId;
+      private Long postId;
+      private Long commentId;
 
-      String memberEmail;
-      String memberNickname;
-      String content;
+      private String memberEmail;
+      private String memberNickname;
+      private String content;
 
-      LocalDateTime createdAt;
-      LocalDateTime updatedAt;
+
+      private LocalDateTime createdAt;
+      private LocalDateTime updatedAt;
 
       public static CommentResponse fromEntity(Comment comment) {
             return CommentResponse.builder()
