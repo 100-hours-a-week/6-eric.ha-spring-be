@@ -72,10 +72,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                               request.setAttribute("exception", UNKNOWN_ERROR);
                         }
                   }
+                  filterChain.doFilter(request, response);
+
             } catch (GlobalException e) {
                   request.setAttribute("exception", UNKNOWN_ERROR);
 
             }
+
       }
 
       /**

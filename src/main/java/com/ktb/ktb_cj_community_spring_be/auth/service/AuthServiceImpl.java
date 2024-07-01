@@ -1,6 +1,11 @@
 package com.ktb.ktb_cj_community_spring_be.auth.service;
 
-import static com.ktb.ktb_cj_community_spring_be.global.exception.type.ErrorCode.*;
+import static com.ktb.ktb_cj_community_spring_be.global.exception.type.ErrorCode.DUPLICATE_USER;
+import static com.ktb.ktb_cj_community_spring_be.global.exception.type.ErrorCode.INTERNAL_SERVER_ERROR;
+import static com.ktb.ktb_cj_community_spring_be.global.exception.type.ErrorCode.INVALID_TOKEN;
+import static com.ktb.ktb_cj_community_spring_be.global.exception.type.ErrorCode.PASSWORD_NOT_MATCH;
+import static com.ktb.ktb_cj_community_spring_be.global.exception.type.ErrorCode.PROFILE_IMAGE_UPLOAD_ERROR;
+import static com.ktb.ktb_cj_community_spring_be.global.exception.type.ErrorCode.USER_NOT_FOUND;
 
 import com.ktb.ktb_cj_community_spring_be.auth.dto.LogoutDto;
 import com.ktb.ktb_cj_community_spring_be.auth.dto.ReissueDto;
@@ -20,6 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,30 +44,37 @@ public class AuthServiceImpl implements AuthService {
       private static final String REFRESH_TOKEN_PREFIX = "REFRESH_TOKEN: ";
 
       @Override
+      @Transactional
       public SignUpDto signUp(SignUpDto request, MultipartFile profileImage) {
-            if (memberRepository.existsByEmail(request.getEmail())) {
-                  throw new GlobalException(DUPLICATE_USER);
-            }
-
-            String encodedPasswordEncoder = passwordEncoder.encode(request.getPassword());
-
-            //프로필 이미지가 제공되었을 경우 S3에 업로드하고 그 URL 을 가져옴
-            String profileImageUrl = null; // 기본값은 null
-            if (profileImage != null && !profileImageUrl.isEmpty()) {
-                  try {
-                        profileImageUrl = uploadProfileImage(profileImage);
-
-                  } catch (Exception e) { // 이미지 업로드 중 오류 발생시 예외처리
-                        throw new GlobalException(PROFILE_IMAGE_UPLOAD_ERROR);
+            try {
+                  if (memberRepository.existsByEmail(request.getEmail())) {
+                        throw new GlobalException(DUPLICATE_USER);
                   }
+
+                  String encodedPasswordEncoder = passwordEncoder.encode(request.getPassword());
+
+                  //프로필 이미지가 제공되었을 경우 S3에 업로드하고 그 URL 을 가져옴
+                  String profileImageUrl = null; // 기본값은 null
+                  if (profileImage != null && !profileImage.isEmpty()) {
+                        try {
+                              profileImageUrl = uploadProfileImage(profileImage);
+
+                        } catch (Exception e) { // 이미지 업로드 중 오류 발생시 예외처리
+                              throw new GlobalException(PROFILE_IMAGE_UPLOAD_ERROR);
+                        }
+                  }
+
+                  request.setProfileImageUrl(profileImageUrl);
+
+                  Member saveMember = memberRepository.save(
+                          SignUpDto.signUpForm(request, encodedPasswordEncoder));
+
+                  log.info("회원가입 완료: {}", saveMember.getEmail());
+                  return SignUpDto.fromEntity(memberRepository.save(saveMember));
+            } catch (Exception e) {
+                  log.error("회원가입 중 오류", e);
+                  throw new GlobalException(INTERNAL_SERVER_ERROR);
             }
-
-            request.setProfileImageUrl(profileImageUrl);
-
-            Member saveMember = memberRepository.save(
-                    SignUpDto.signUpForm(request, encodedPasswordEncoder));
-
-            return SignUpDto.fromEntity(memberRepository.save(saveMember));
       }
 
 
