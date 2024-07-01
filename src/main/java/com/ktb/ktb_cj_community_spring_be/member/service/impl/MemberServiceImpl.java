@@ -72,14 +72,14 @@ public class MemberServiceImpl implements MemberService {
       /**
        * 닉네임 중복 조회
        *
-       * @param nickName 닉네임 정보
+       * @param nickname 닉네임 정보
        * @return 중복이 없을 경우 true
        * @throws GlobalException 닉네임 중복 시 예외 발생
        */
       // 멤버 닉네임 중복 조회
       @Override
-      public boolean checkNickNameDuplication(String nickName) {
-            return memberRepository.existsByNickName(nickName);
+      public boolean checkNickNameDuplication(String nickname) {
+            return memberRepository.existsByNickname(nickname);
       }
 
 

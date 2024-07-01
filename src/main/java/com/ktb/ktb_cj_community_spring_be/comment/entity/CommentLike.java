@@ -3,7 +3,13 @@ package com.ktb.ktb_cj_community_spring_be.comment.entity;
 
 import com.ktb.ktb_cj_community_spring_be.global.entity.BaseEntity;
 import com.ktb.ktb_cj_community_spring_be.member.entity.Member;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +38,14 @@ public class CommentLike extends BaseEntity {
       @JoinColumn(name = "member_id")
       private Member member;
 
+      public void addMember(Member member) {
+            this.member = member;
+      }
+
+      public void addComment(Comment comment) {
+            this.comment = comment;
+            comment.addCommentLike(this);
+      }
 
 
 }

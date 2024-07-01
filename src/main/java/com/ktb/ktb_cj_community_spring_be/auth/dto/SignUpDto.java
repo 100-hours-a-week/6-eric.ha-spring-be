@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 
 @Getter
@@ -17,6 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class SignUpDto {
 
       @Email
@@ -49,6 +51,7 @@ public class SignUpDto {
                     .password(encodedPasswordEncoder)
                     .nickname(request.getNickname())
                     .roleType(MemberRoleType.USER)
+                    .profileImageUrl(request.getProfileImageUrl())
                     .build();
       }
 
