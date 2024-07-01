@@ -48,6 +48,7 @@ public class SecurityConfig {
                     .authorizeHttpRequests(
                             auth -> auth
                                     .requestMatchers(requestHasRoleUser()).hasRole("USER")
+                                    .requestMatchers(requestHasAnyRoleUserAdmin()).hasRole("ADMIN")
                                     .requestMatchers(requestHasAnyRoleUserAdmin())
                                     .hasAnyRole("USER", "ADMIN")
                                     .anyRequest().permitAll()
@@ -63,7 +64,7 @@ public class SecurityConfig {
 
       private RequestMatcher[] requestHasRoleUser() {
             List<RequestMatcher> requestMatchers = List.of(
-                    antMatcher("/api/user"),
+                    antMatcher("/api/member"),
                     antMatcher(POST, "/api/post"),
                     antMatcher(PUT, "/api/post"),
                     antMatcher(DELETE, "/api/post"),
